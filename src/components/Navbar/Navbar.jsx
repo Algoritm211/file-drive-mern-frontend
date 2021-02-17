@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components'
 import {NavLink} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {getAuth} from "../../redux/auth-selector";
+import {logout} from "../../redux/auth-reducer";
 
 
 const HeaderContainer = styled.header`
@@ -13,16 +16,17 @@ const HeaderContainer = styled.header`
   padding: 0 40px;
   background-color: black;
   color: white;
-  
+
   div {
     cursor: pointer;
   }
-  
+
   a {
     color: white;
     text-decoration: none;
     transition: all 0.2s ease;
-    
+    margin-left: 20px;
+
     &:hover {
       font-size: 18px;
     }
@@ -31,15 +35,22 @@ const HeaderContainer = styled.header`
 
 const Navbar = () => {
 
+  const dispatch = useDispatch()
+  const isAuth = useSelector(getAuth)
+
+  const logoutUser = () => {
+    dispatch(logout())
+  }
+
   return (
     <HeaderContainer>
       <div>
         <i className="fas fa-bars"></i>
       </div>
       <div>
-        <NavLink to={'/registration'}>
-          Регистрация
-        </NavLink>
+        {!isAuth && <NavLink to={'/login'}>Войти</NavLink>}
+        {!isAuth && <NavLink to={'/registration'}>Регистрация</NavLink>}
+        {isAuth && <div onClick={logoutUser}>Выйти</div>}
       </div>
     </HeaderContainer>
   );

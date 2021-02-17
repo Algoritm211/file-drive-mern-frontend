@@ -6,13 +6,14 @@ const instanceAxios = axios.create({
 })
 
 
-export const loginAPI = {
+export const authAPI = {
   registration: async (email, password) => {
-    try {
-      const response = await instanceAxios.post('/api/auth/registration', {email, password})
-      alert(JSON.stringify(response.data.message))
-    } catch (e) {
-      alert(e.response.data.message)
-    }
+    return await instanceAxios.post('/api/auth/registration', {email, password})
+      .then(data => data.data)
+  },
+
+  login: async (email, password) => {
+    return await instanceAxios.post('/api/auth/login', {email, password})
+      .then(data => data.data)
   }
 }

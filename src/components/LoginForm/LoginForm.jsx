@@ -1,27 +1,24 @@
 import React, {useState} from 'react';
-import styled from 'styled-components'
-import {authAPI} from "../../api/login-api";
+import {loginAPI} from "../../api/login-api";
 import {Button, Container, Input} from "../common/form-styled-elements";
+import {useDispatch} from "react-redux";
+import {loginUser} from "../../redux/auth-reducer";
 
 
-
-
-
-
-const RegistrationForm = () => {
-
+const LoginForm = () => {
+  const dispatch = useDispatch()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const sendFormToServer = () => {
-    authAPI.registration(email, password)
+  const sendFormLogin = () => {
+    dispatch(loginUser(email, password))
     setEmail('')
     setPassword('')
   }
 
   return (
     <Container>
-      <h2>Регистрация</h2>
+      <h2>Авторизация</h2>
       <label htmlFor={'email'}>Email:</label>
       <Input
         id={'email'}
@@ -35,11 +32,11 @@ const RegistrationForm = () => {
         type={'password'}
         value={password}
         onChange={(event) => setPassword(event.target.value)}/>
-      <Button onClick={sendFormToServer}>
-        Зарегистрироваться
+      <Button onClick={sendFormLogin}>
+        Войти
       </Button>
     </Container>
   );
 };
 
-export default RegistrationForm;
+export default LoginForm;
