@@ -35,3 +35,14 @@ export const loginUser = (email, password) => async (dispatch) => {
     alert(error.response.data.message)
   }
 }
+
+export const authUser = () => async (dispatch) => {
+  try {
+    const data = await authAPI.auth()
+    dispatch(setUserAuthData(data.user))
+    localStorage.setItem('authToken', data.token)
+  } catch (error) {
+    localStorage.removeItem('authToken')
+    alert(error.response.data.message)
+  }
+}
