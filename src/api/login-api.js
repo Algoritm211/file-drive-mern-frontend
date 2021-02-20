@@ -1,8 +1,9 @@
 import axios from "axios";
 
 
-const instanceAxios = axios.create({
-  baseURL: 'http://localhost:5000/api/'
+export const instanceAxios = axios.create({
+  baseURL: 'http://localhost:5000/api/',
+  headers: {Authorization: `Bearer ${localStorage.getItem('authToken')}`}
 })
 
 
@@ -17,8 +18,7 @@ export const authAPI = {
       .then(data => data.data)
   },
   auth: async () => {
-    const token = localStorage.getItem('authToken')
-    return await instanceAxios.get('/auth/authorization', {headers: {Authorization: `Bearer ${token}`}})
+    return await instanceAxios.get('/auth/authorization',)
       .then(data => data.data)
   }
 }

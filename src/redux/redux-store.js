@@ -1,10 +1,12 @@
 import {combineReducers} from "redux";
 import authReducer from './auth-reducer'
 import {configureStore} from "@reduxjs/toolkit";
+import fileReducer from "./file-reducer";
 
 
 const rootReducer = combineReducers({
-  authReducer: authReducer
+  authReducer: authReducer,
+  fileReducer: fileReducer
 })
 
 

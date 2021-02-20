@@ -1,0 +1,41 @@
+
+.fileContainer {
+  display: grid;
+  grid-template-columns: 1fr 4fr repeat(4, 1fr);
+  height: 60px;
+  width: 100%;
+  border-bottom: 1px solid black;
+  margin-bottom: 10px;
+  transition: all 0.5s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.01);
+  }
+
+  div {
+    align-self: center;
+    text-align: center;
+  }
+
+  .fileNumber {
+    grid-column-start: 1;
+
+    i {
+      font-size: 40px;
+    }
+  }
+
+  .title {
+    grid-column-start: 2;
+    text-align: left;
+  }
+
+  .date {
+    grid-column-start: 5;
+  }
+
+  .size {
+    grid-column-start: 6;
+  }
+}

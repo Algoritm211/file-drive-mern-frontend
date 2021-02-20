@@ -1,0 +1,29 @@
+
+
+.fileList {
+  display: grid;
+  grid-template-columns: 1fr 4fr repeat(4, 1fr);
+  margin-top: 40px;
+
+  div {
+    align-self: center;
+    text-align: center;
+  }
+
+  .fileNumber {
+    grid-column-start: 1;
+  }
+
+  .title {
+    grid-column-start: 2;
+    text-align: left;
+  }
+
+  .size {
+    grid-column-start: 6;
+  }
+
+  .date {
+    grid-column-start: 5;
+  }
+}
