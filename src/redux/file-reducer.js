@@ -16,7 +16,7 @@ const fileReducer = createSlice({
     setCurrentDir(state, action) {
       state.currentDir = action.payload
     },
-    createDir(state, action) {
+    createFile(state, action) {
       state.files.push(action.payload)
     },
     pushToFileStack(state, action) {
@@ -28,7 +28,7 @@ const fileReducer = createSlice({
   }
 })
 
-export const {setFiles, setCurrentDir, createDir, pushToFileStack, popFromFileStack} = fileReducer.actions
+export const {setFiles, setCurrentDir, createFile, pushToFileStack, popFromFileStack} = fileReducer.actions
 export default fileReducer.reducer
 
 
@@ -40,5 +40,11 @@ export const loadFiles = (dirId) => async (dispatch) => {
 
 export const createNewDir = (dirId, name) => async (dispatch) => {
   const dir = await fileAPI.createDir(dirId, name)
-  dispatch(createDir(dir))
+  dispatch(createFile(dir))
+}
+
+export const uploadFile = (file, dirId) => async (dispatch) => {
+  const fileData = await fileAPI.uploadFile(file, dirId)
+
+  dispatch(createFile(fileData))
 }
