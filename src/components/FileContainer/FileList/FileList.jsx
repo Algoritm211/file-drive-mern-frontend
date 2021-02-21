@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import styled from "styled-components";
 import classes from './FileList.module.scss'
 import File from "./File/File";
 import {useDispatch, useSelector} from "react-redux";

@@ -19,6 +19,9 @@ const fileReducer = createSlice({
     createFile(state, action) {
       state.files.push(action.payload)
     },
+    removeFile(state, action) {
+      state.files = state.files.filter(file => file._id !== action.payload.id)
+    },
     pushToFileStack(state, action) {
       state.fileStack.push(action.payload)
     },
@@ -28,7 +31,7 @@ const fileReducer = createSlice({
   }
 })
 
-export const {setFiles, setCurrentDir, createFile, pushToFileStack, popFromFileStack} = fileReducer.actions
+export const {setFiles, setCurrentDir, createFile, removeFile, pushToFileStack, popFromFileStack} = fileReducer.actions
 export default fileReducer.reducer
 
 
@@ -47,4 +50,23 @@ export const uploadFile = (file, dirId) => async (dispatch) => {
   const fileData = await fileAPI.uploadFile(file, dirId)
 
   dispatch(createFile(fileData))
+}
+
+export const downloadFile = (file) => async (dispatch) => {
+  const fileBlob = await fileAPI.downloadFile(file._id)
+
+  const fileDownloadUrl = window.URL.createObjectURL(fileBlob)
+  const link = document.createElement('a')
+  document.body.appendChild(link)
+  link.href = fileDownloadUrl
+  link.download = file.name
+  link.click()
+  link.remove()
+}
+
+export const deleteFile = (file) => async (dispatch) => {
+
+  const fileId = await fileAPI.deleteFile(file._id)
+
+  dispatch(removeFile(fileId))
 }

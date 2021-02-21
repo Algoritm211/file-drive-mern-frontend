@@ -72,6 +72,9 @@ const FileContainer = () => {
   const fileHandler = (event) => {
     const files = [...event.target.files]
 
+    files.forEach((file) => {
+      dispatch(uploadFile(file, currentFileDir))
+    })
   }
 
   const dragEnterHandler = (event) => {

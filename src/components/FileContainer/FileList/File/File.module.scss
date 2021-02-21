@@ -38,4 +38,50 @@
   .size {
     grid-column-start: 6;
   }
+
+  &:hover .date {
+    grid-column-start: 3;
+  }
+
+  &:hover .size {
+    grid-column-start: 4;
+  }
+
+  &:hover .downloadBtn {
+    grid-column-start: 6;
+  }
+
+  &:hover .deleteFile {
+    grid-column-start: 5;
+  }
+
+}
+
+
+%fileActionsBtnsTemplate {
+  display: none;
+  transition: all 0.5s ease;
+  font-size: 25px;
+  padding: 1px;
+  width: 90%;
+  border: 1px solid black;
+  border-radius: 14px;
+
+  .fileContainer:hover & {
+    display: block;
+  }
+
+  &:hover {
+    background-color: #d7d7d7;
+  }
+}
+
+
+.downloadBtn {
+  @extend %fileActionsBtnsTemplate
+}
+
+.deleteFile {
+  @extend %fileActionsBtnsTemplate
+
 }

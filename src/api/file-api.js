@@ -32,5 +32,18 @@ export const fileAPI = {
       }
     }).then(data => data.data)
 
+  },
+
+  downloadFile(fileId) {
+    const fileBlob = instanceAxios.get(`/files/download/?id=${fileId}`, {
+      responseType: 'blob'
+    })
+      .then(data => data.data)
+    return fileBlob
+  },
+
+  deleteFile(fileId) {
+    return instanceAxios.delete(`/files/?id=${fileId}`)
+      .then(data => data.data)
   }
 }
