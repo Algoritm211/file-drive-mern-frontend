@@ -5,6 +5,7 @@ import CreateDirModal from "./CreateDirModal";
 import {useDispatch, useSelector} from "react-redux";
 import {getCurrentDir, getFileStack} from "../../redux/file-selector";
 import {popFromFileStack, setCurrentDir, uploadFile} from "../../redux/file-reducer";
+import UploaderContainer from "./FileUploader/UploaderContainer";
 
 
 const Container = styled.div`
@@ -123,6 +124,7 @@ const FileContainer = () => {
           Перетащите файлы в выбранную область
         </DropArea>
     }
+    <UploaderContainer />
     </React.Fragment>
 )
   ;

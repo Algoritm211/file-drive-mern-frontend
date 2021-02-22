@@ -47,7 +47,7 @@ export const createNewDir = (dirId, name) => async (dispatch) => {
 }
 
 export const uploadFile = (file, dirId) => async (dispatch) => {
-  const fileData = await fileAPI.uploadFile(file, dirId)
+  const fileData = await fileAPI.uploadFile(file, dirId, dispatch)
 
   dispatch(createFile(fileData))
 }

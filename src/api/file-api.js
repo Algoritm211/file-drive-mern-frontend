@@ -1,4 +1,5 @@
 import {instanceAxios} from "./login-api";
+import {addFile, changeLoadingProgress, toggleVisible} from "../redux/uploader-reducer";
 
 
 export const fileAPI = {
@@ -15,19 +16,25 @@ export const fileAPI = {
     }).then(data => data.data)
   },
 
-  uploadFile(file, dirId) {
+  uploadFile(file, dirId, dispatch) {
     const formData = new FormData()
     formData.append('file', file)
     if (dirId) {
       formData.append('parent', dirId)
     }
 
+    let uploadingFile = {name: file.name, progress: 0, id: Date.now()}
+    dispatch(toggleVisible(true))
+    dispatch(addFile(uploadingFile))
+
     return instanceAxios.post('/files/upload/', formData, {
       onUploadProgress: (progressEvent) => {
         const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
         if (totalLength) {
-          const loadPercent = Math.round((progressEvent.loaded * 100) / totalLength)
-          console.log(`Всего ${totalLength}, загружено ${loadPercent}%`)
+
+          const progress = Math.round((progressEvent.loaded * 100) / totalLength)
+          dispatch(changeLoadingProgress({file: uploadingFile, progress: progress}))
+          // console.log(`Всего ${totalLength}, загружено ${loadPercent}%`)
         }
       }
     }).then(data => data.data)
