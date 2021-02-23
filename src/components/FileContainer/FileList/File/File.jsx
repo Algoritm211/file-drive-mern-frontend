@@ -3,12 +3,14 @@ import classes from './File.module.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {deleteFile, downloadFile, pushToFileStack, setCurrentDir} from "../../../../redux/file-reducer";
 import {getCurrentDir} from "../../../../redux/file-selector";
+import Fade from 'react-reveal/Fade';
 
 
 const File = (props) => {
   const dispatch = useDispatch()
   const {name, date, size, type} = props.file
   const currentDir = useSelector(getCurrentDir)
+
 
   const openDirHandler = () => {
     if (props.file.type === 'dir') {
@@ -28,28 +30,30 @@ const File = (props) => {
   }
 
   return (
-    <div className={classes.fileContainer} onClick={() => openDirHandler()}>
-      <div className={classes.fileNumber}>
-        {type === 'dir'
-          ? <i className="fas fa-folder"/>
-          : <i className="fas fa-file"/>}</div>
-      <div className={classes.title}>{name}</div>
-      <div className={classes.date}>{date.slice(0, 10)}</div>
-      <div className={classes.size}>{formatBytes(size)}</div>
-      <div className={classes.deleteFile}
-           onClick={(event) => deleteFileHandler(event)}>
-        <i className="fas fa-trash-alt" />
-      </div>
-      {type !== 'dir'
-      &&
-      <div
-        className={classes.downloadBtn}
-        onClick={(event) => downloadFileHandler(event)}
-      >
-        <i className="fas fa-download"/></div>
-      }
+    <Fade top>
+      <div className={classes.fileContainer} onClick={() => openDirHandler()}>
+        <div className={classes.fileNumber}>
+          {type === 'dir'
+            ? <i className="fas fa-folder"/>
+            : <i className="fas fa-file"/>}</div>
+        <div className={classes.title}>{name}</div>
+        <div className={classes.date}>{date.slice(0, 10)}</div>
+        <div className={classes.size}>{formatBytes(size)}</div>
+        <div className={classes.deleteFile}
+             onClick={(event) => deleteFileHandler(event)}>
+          <i className="fas fa-trash-alt"/>
+        </div>
+        {type !== 'dir'
+        &&
+        <div
+          className={classes.downloadBtn}
+          onClick={(event) => downloadFileHandler(event)}
+        >
+          <i className="fas fa-download"/></div>
+        }
 
-    </div>
+      </div>
+    </Fade>
   );
 };
 

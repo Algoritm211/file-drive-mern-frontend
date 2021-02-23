@@ -3,8 +3,20 @@ import {addFile, changeLoadingProgress, toggleVisible} from "../redux/uploader-r
 
 
 export const fileAPI = {
-  getFiles(dirId) {
-    return instanceAxios.get(`/files${dirId ? '?parent=' + dirId : ''}`)
+  getFiles(dirId, sort) {
+    if (dirId) {
+      return instanceAxios.get(`/files?parent=${dirId}`)
+        .then(data => data.data)
+    }
+    if (sort) {
+      return instanceAxios.get(`/files?sort=${sort}`)
+        .then(data => data.data)
+    }
+    if (dirId && sort) {
+      return instanceAxios.get(`/files?parent=${dirId}&sort=${sort}`)
+        .then(data => data.data)
+    }
+    return instanceAxios.get(`/files`)
       .then(data => data.data)
   },
 

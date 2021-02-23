@@ -13,12 +13,11 @@ const FileList = () => {
   const files = useSelector(getFiles)
   const currentFileDir = useSelector(getCurrentDir)
 
-  useEffect(() => {
-    dispatch(loadFiles(currentFileDir))
-  }, [currentFileDir])
 
   const filesBlock = files.map((file) => {
-    return <File key={file._id} file={file}/>
+    return (
+        <File key={file._id} file={file}/>
+      )
   })
 
   return (
@@ -29,8 +28,7 @@ const FileList = () => {
         <div className={classes.date}>Дата</div>
         <div className={classes.size}>Размер</div>
       </div>
-
-      {filesBlock}
+        {filesBlock}
     </React.Fragment>
   );
 };

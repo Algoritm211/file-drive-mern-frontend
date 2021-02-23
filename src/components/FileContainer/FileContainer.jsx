@@ -1,11 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import FileList from "./FileList/FileList";
 import CreateDirModal from "./CreateDirModal";
 import {useDispatch, useSelector} from "react-redux";
 import {getCurrentDir, getFileStack} from "../../redux/file-selector";
-import {popFromFileStack, setCurrentDir, uploadFile} from "../../redux/file-reducer";
+import {loadFiles, popFromFileStack, setCurrentDir, uploadFile} from "../../redux/file-reducer";
 import UploaderContainer from "./FileUploader/UploaderContainer";
+import Select from 'react-select';
 
 
 const Container = styled.div`
@@ -56,13 +57,33 @@ const DropArea = styled.div`
   text-align: center;
 `
 
+const SelectContainer = styled.div`
+  margin-top: 40px;
+  select {
+    width: 150px;
+    text-align: center;
+    margin-top: 5px;
+  }
+`
+
 const FileContainer = () => {
 
   const dispatch = useDispatch()
   const [openCreateDirModal, setOpenCreateDirModal] = useState(false)
+  const [sort, setSort] = useState('')
   const [onDragEnter, setOnDragEnter] = useState(false)
   const currentFileDir = useSelector(getCurrentDir)
   let fileStack = useSelector(getFileStack)
+
+  useEffect(() => {
+    dispatch(loadFiles(currentFileDir, sort))
+  }, [currentFileDir, sort])
+
+
+  const onSelectChange = (event) => {
+    const selectValue = event.target.value
+    setSort(selectValue)
+  }
 
   const backClickHandler = () => {
     const backId = fileStack[fileStack.length - 1]
@@ -102,32 +123,42 @@ const FileContainer = () => {
 
   return (
     <React.Fragment>
-    {
-      !onDragEnter
-        ? <Container onDragLeave={dragLeaveHandler} onDragOver={dragEnterHandler} onDragEnter={dragEnterHandler}>
-          <Button onClick={backClickHandler}>Назад</Button>
-          <Button onClick={() => setOpenCreateDirModal(true)}>Создать папку</Button>
-          <div>
-            <FileLabel htmlFor={'file__input'}>Загрузить</FileLabel>
-            <FileInput type={'file'} id='file__input' onChange={(event) => fileHandler(event)}/>
-          </div>
-          <FileList/>
-          {openCreateDirModal &&
-          <CreateDirModal
-            setIsOpenModal={setOpenCreateDirModal}
-            isOpen={openCreateDirModal}
-          />}
+      {
+        !onDragEnter
+          ? <Container onDragLeave={dragLeaveHandler} onDragOver={dragEnterHandler} onDragEnter={dragEnterHandler}>
+            <Button onClick={backClickHandler}>Назад</Button>
+            <Button onClick={() => setOpenCreateDirModal(true)}>Создать папку</Button>
+            <div>
+              <FileLabel htmlFor={'file__input'}>Загрузить</FileLabel>
+              <FileInput type={'file'} id='file__input' onChange={(event) => fileHandler(event)}/>
+            </div>
+            <SelectContainer>
+              <label htmlFor="sort">Выберите параметр сортировки:<br/></label>
+              <select name="sort" id="sort" onChange={onSelectChange}>
+                <option value="">Без параметра</option>
+                <option value="size">Размер</option>
+                <option value="name">Имя</option>
+                <option value="date">Дата</option>
+              </select>
+            </SelectContainer>
+            <FileList/>
+            {openCreateDirModal &&
+            <CreateDirModal
+              setIsOpenModal={setOpenCreateDirModal}
+              isOpen={openCreateDirModal}
+            />}
 
-        </Container>
+          </Container>
 
-        : <DropArea onDrop={onDropHandler} onDragLeave={dragLeaveHandler} onDragOver={dragEnterHandler} onDragEnter={dragEnterHandler}>
-          Перетащите файлы в выбранную область
-        </DropArea>
-    }
-    <UploaderContainer />
+          : <DropArea onDrop={onDropHandler} onDragLeave={dragLeaveHandler} onDragOver={dragEnterHandler}
+                      onDragEnter={dragEnterHandler}>
+            Перетащите файлы в выбранную область
+          </DropArea>
+      }
+      <UploaderContainer/>
     </React.Fragment>
-)
-  ;
+  )
+    ;
 };
 
 export default FileContainer;

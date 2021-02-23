@@ -35,8 +35,8 @@ export const {setFiles, setCurrentDir, createFile, removeFile, pushToFileStack, 
 export default fileReducer.reducer
 
 
-export const loadFiles = (dirId) => async (dispatch) => {
-  const data = await fileAPI.getFiles(dirId)
+export const loadFiles = (dirId, sort) => async (dispatch) => {
+  const data = await fileAPI.getFiles(dirId, sort)
 
   dispatch(setFiles(data))
 }
