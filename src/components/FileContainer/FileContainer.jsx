@@ -4,9 +4,10 @@ import FileList from "./FileList/FileList";
 import CreateDirModal from "./CreateDirModal";
 import {useDispatch, useSelector} from "react-redux";
 import {getCurrentDir, getFileStack} from "../../redux/file-selector";
-import {loadFiles, popFromFileStack, setCurrentDir, uploadFile} from "../../redux/file-reducer";
+import {loadFiles, popFromFileStack, searchFiles, setCurrentDir, uploadFile} from "../../redux/file-reducer";
 import UploaderContainer from "./FileUploader/UploaderContainer";
 import Select from 'react-select';
+import {Input} from "../common/form-styled-elements";
 
 
 const Container = styled.div`
@@ -57,8 +58,16 @@ const DropArea = styled.div`
   text-align: center;
 `
 
+const SortContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+
 const SelectContainer = styled.div`
   margin-top: 40px;
+
   select {
     width: 150px;
     text-align: center;
@@ -69,9 +78,11 @@ const SelectContainer = styled.div`
 const FileContainer = () => {
 
   const dispatch = useDispatch()
+
   const [openCreateDirModal, setOpenCreateDirModal] = useState(false)
   const [sort, setSort] = useState('')
   const [onDragEnter, setOnDragEnter] = useState(false)
+  const [searchTimeout, setSearchTimeout] = useState(false)
   const currentFileDir = useSelector(getCurrentDir)
   let fileStack = useSelector(getFileStack)
 
@@ -83,6 +94,24 @@ const FileContainer = () => {
   const onSelectChange = (event) => {
     const selectValue = event.target.value
     setSort(selectValue)
+  }
+
+  const onSearchChange = (event) => {
+    const searchString = event.target.value
+
+    if (searchTimeout !== false) {
+      clearInterval(searchTimeout)
+    }
+
+    setSearchTimeout(
+      setTimeout(() => {
+        if (searchString.trim().length === 0) {
+          dispatch(loadFiles(currentFileDir, sort))
+        } else {
+          dispatch(searchFiles(searchString))
+        }
+      }, 700)
+    )
   }
 
   const backClickHandler = () => {
@@ -132,15 +161,23 @@ const FileContainer = () => {
               <FileLabel htmlFor={'file__input'}>Загрузить</FileLabel>
               <FileInput type={'file'} id='file__input' onChange={(event) => fileHandler(event)}/>
             </div>
-            <SelectContainer>
-              <label htmlFor="sort">Выберите параметр сортировки:<br/></label>
-              <select name="sort" id="sort" onChange={onSelectChange}>
-                <option value="">Без параметра</option>
-                <option value="size">Размер</option>
-                <option value="name">Имя</option>
-                <option value="date">Дата</option>
-              </select>
-            </SelectContainer>
+            <SortContainer>
+              <SelectContainer>
+                <label htmlFor="sort">Выберите параметр сортировки:<br/></label>
+                <select name="sort" id="sort" onChange={onSelectChange}>
+                  <option value="">Без параметра</option>
+                  <option value="size">Размер</option>
+                  <option value="name">Имя</option>
+                  <option value="date">Дата</option>
+                </select>
+              </SelectContainer>
+              <div>
+                <Input
+                  bgColor={'transparent'}
+                  onChange={event => onSearchChange(event)}/>
+                <i className="fas fa-search"/>
+              </div>
+            </SortContainer>
             <FileList/>
             {openCreateDirModal &&
             <CreateDirModal

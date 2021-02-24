@@ -37,7 +37,6 @@ export default fileReducer.reducer
 
 export const loadFiles = (dirId, sort) => async (dispatch) => {
   const data = await fileAPI.getFiles(dirId, sort)
-
   dispatch(setFiles(data))
 }
 
@@ -69,4 +68,9 @@ export const deleteFile = (file) => async (dispatch) => {
   const fileId = await fileAPI.deleteFile(file._id)
 
   dispatch(removeFile(fileId))
+}
+
+export const searchFiles = (searchString) => async (dispatch) => {
+  const foundFiles = await fileAPI.searchFile(searchString)
+  dispatch(setFiles(foundFiles))
 }

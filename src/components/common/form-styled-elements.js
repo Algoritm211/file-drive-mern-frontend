@@ -20,8 +20,9 @@ export const Input = styled.input`
   font-size: 20px;
   border: none;
   border-bottom: 3px solid black;
-  background-color: darkgray;
+  background-color: ${(props) => props.bgColor || 'darkgray'};
   margin-bottom: 20px;
+  padding: 2px;
   transition: all 0.4s ease;
 
   &:hover {

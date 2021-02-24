@@ -43,7 +43,6 @@ export const fileAPI = {
       onUploadProgress: (progressEvent) => {
         const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
         if (totalLength) {
-
           const progress = Math.round((progressEvent.loaded * 100) / totalLength)
           dispatch(changeLoadingProgress({file: uploadingFile, progress: progress}))
           // console.log(`Всего ${totalLength}, загружено ${loadPercent}%`)
@@ -63,6 +62,11 @@ export const fileAPI = {
 
   deleteFile(fileId) {
     return instanceAxios.delete(`/files/?id=${fileId}`)
+      .then(data => data.data)
+  },
+
+  searchFile(searchString) {
+    return instanceAxios.get(`/files/search?search=${searchString}`)
       .then(data => data.data)
   }
 }
