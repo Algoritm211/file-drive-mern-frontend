@@ -7,7 +7,8 @@ const fileReducer = createSlice({
   initialState: {
     files: [],
     currentDir: null,
-    fileStack: []
+    fileStack: [],
+    mode: 'list' // 'list' or 'block'
   },
   reducers: {
     setFiles(state, action) {
@@ -27,11 +28,23 @@ const fileReducer = createSlice({
     },
     popFromFileStack(state, action) {
       state.fileStack.pop()
+    },
+
+    setFileViewMode(state, action) {
+      state.mode = action.payload
     }
   }
 })
 
-export const {setFiles, setCurrentDir, createFile, removeFile, pushToFileStack, popFromFileStack} = fileReducer.actions
+export const {
+  setFiles,
+  setCurrentDir,
+  createFile,
+  removeFile,
+  pushToFileStack,
+  popFromFileStack,
+  setFileViewMode
+} = fileReducer.actions
 export default fileReducer.reducer
 
 

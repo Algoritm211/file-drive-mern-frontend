@@ -2,17 +2,15 @@ import React, {useEffect} from 'react';
 import classes from './FileList.module.scss'
 import File from "./File/File";
 import {useDispatch, useSelector} from "react-redux";
-import {getCurrentDir, getFiles} from "../../../redux/file-selector";
+import {getCurrentDir, getFiles, getModeFileView} from "../../../redux/file-selector";
 import {loadFiles} from "../../../redux/file-reducer";
 
 
 
 const FileList = () => {
 
-  const dispatch = useDispatch()
   const files = useSelector(getFiles)
-  const currentFileDir = useSelector(getCurrentDir)
-
+  const fileModeView = useSelector(getModeFileView)
 
   const filesBlock = files.map((file) => {
     return (
@@ -28,7 +26,10 @@ const FileList = () => {
         <div className={classes.date}>Дата</div>
         <div className={classes.size}>Размер</div>
       </div>
+      <div className={fileModeView === 'block' ? classes.fileBlock : ''}>
         {filesBlock}
+      </div>
+
     </React.Fragment>
   );
 };

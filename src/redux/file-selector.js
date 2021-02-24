@@ -12,3 +12,7 @@ export const getCurrentDir = (state) => {
 export const getFileStack = (state) => {
   return state.fileReducer.fileStack
 }
+
+export const getModeFileView = (state) => {
+  return state.fileReducer.mode
+}

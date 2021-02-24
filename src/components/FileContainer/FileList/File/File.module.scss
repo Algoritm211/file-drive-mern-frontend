@@ -1,4 +1,6 @@
 
+
+// List view mode
 .fileContainer {
   display: grid;
   grid-template-columns: 1fr 4fr repeat(4, 1fr);
@@ -58,7 +60,7 @@
 }
 
 
-%fileActionsBtnsTemplate {
+%fileActionsBtnsTemplateList {
   display: none;
   transition: all 0.5s ease;
   font-size: 25px;
@@ -77,11 +79,73 @@
 }
 
 
+// Block view mode
+
+
+.fileContainerBlock {
+  display: flex;
+  width: 100px;
+  height: 200px;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-right: 5px;
+}
+
+.fileIconBlock {
+  font-size: 70px;
+}
+
+.fileInfoBlock {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 75px;
+}
+
+.fileActions {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .downloadBtn {
-  @extend %fileActionsBtnsTemplate
+  @extend %fileActionsBtnsTemplateList
 }
 
 .deleteFile {
-  @extend %fileActionsBtnsTemplate
+  @extend %fileActionsBtnsTemplateList
+}
+
+
+%fileActionsBtnsTemplateBlock {
+  display: none;
+  transition: all 0.5s ease;
+  font-size: 10px;
+  padding: 1px;
+  width: 40%;
+  border: 1px solid black;
+  border-radius: 14px;
+  align-self: center;
+  text-align: center;
+  cursor: pointer;
+
+  .fileContainerBlock:hover & {
+    display: block;
+  }
+
+  &:hover {
+    background-color: #d7d7d7;
+  }
 
 }
+.deleteFileBlock {
+  @extend %fileActionsBtnsTemplateBlock
+}
+
+.downloadBtnBlock {
+  @extend %fileActionsBtnsTemplateBlock
+}
+
+

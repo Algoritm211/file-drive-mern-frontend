@@ -3,8 +3,15 @@ import styled from "styled-components";
 import FileList from "./FileList/FileList";
 import CreateDirModal from "./CreateDirModal";
 import {useDispatch, useSelector} from "react-redux";
-import {getCurrentDir, getFileStack} from "../../redux/file-selector";
-import {loadFiles, popFromFileStack, searchFiles, setCurrentDir, uploadFile} from "../../redux/file-reducer";
+import {getCurrentDir, getFileStack, getModeFileView} from "../../redux/file-selector";
+import {
+  loadFiles,
+  popFromFileStack,
+  searchFiles,
+  setCurrentDir,
+  setFileViewMode,
+  uploadFile
+} from "../../redux/file-reducer";
 import UploaderContainer from "./FileUploader/UploaderContainer";
 import Select from 'react-select';
 import {Input} from "../common/form-styled-elements";
@@ -75,6 +82,33 @@ const SelectContainer = styled.div`
   }
 `
 
+const FileViewModeContainer = styled.div`
+  margin-top: 10px;
+  display: flex;
+  width: 75px;
+  font-size: 30px;
+  justify-content: space-between;
+  transition: all 0.5s ease;
+
+  i {
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+  }
+
+  i:nth-child(1) {
+    background-color: ${(props) => props.fileModeView === 'list' && 'darkgray'};
+  }
+  
+  i:nth-child(2) {
+    background-color: ${(props) => props.fileModeView === 'block' && 'darkgray'};
+  }
+
+  i:hover {
+    background-color: darkgray;
+  }
+`
+
 const FileContainer = () => {
 
   const dispatch = useDispatch()
@@ -85,6 +119,7 @@ const FileContainer = () => {
   const [searchTimeout, setSearchTimeout] = useState(false)
   const currentFileDir = useSelector(getCurrentDir)
   let fileStack = useSelector(getFileStack)
+  const fileModeView = useSelector(getModeFileView)
 
   useEffect(() => {
     dispatch(loadFiles(currentFileDir, sort))
@@ -178,13 +213,18 @@ const FileContainer = () => {
                 <i className="fas fa-search"/>
               </div>
             </SortContainer>
+            <FileViewModeContainer fileModeView={fileModeView}>
+              <i className="fas fa-list-ul"
+                 onClick={() => dispatch(setFileViewMode('list'))} />
+              <i className="fas fa-th-large"
+                 onClick={() => dispatch(setFileViewMode('block'))}/>
+            </FileViewModeContainer>
             <FileList/>
             {openCreateDirModal &&
             <CreateDirModal
               setIsOpenModal={setOpenCreateDirModal}
               isOpen={openCreateDirModal}
             />}
-
           </Container>
 
           : <DropArea onDrop={onDropHandler} onDragLeave={dragLeaveHandler} onDragOver={dragEnterHandler}
@@ -194,8 +234,7 @@ const FileContainer = () => {
       }
       <UploaderContainer/>
     </React.Fragment>
-  )
-    ;
+  );
 };
 
 export default FileContainer;
