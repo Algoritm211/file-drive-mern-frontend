@@ -2,8 +2,10 @@ import React from 'react';
 import styled from 'styled-components'
 import {NavLink} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {getAuth} from "../../redux/auth-selector";
+import {getAuth, getUserProfile} from "../../redux/auth-selector";
 import {logout} from "../../redux/auth-reducer";
+import noPhotoImg from '../../assets/img/noPhotoImg.png'
+import {SERVER_HOST} from "../../assets/server-info";
 
 
 const HeaderContainer = styled.header`
@@ -33,10 +35,27 @@ const HeaderContainer = styled.header`
   }
 `
 
+const Avatar = styled.img`
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+`
+
+const HeaderActions = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 150px;
+`
+
 const Navbar = () => {
 
   const dispatch = useDispatch()
   const isAuth = useSelector(getAuth)
+
+  const userProfile = useSelector(getUserProfile)
+
+  const userPhoto = userProfile.avatar ? SERVER_HOST + userProfile.avatar : noPhotoImg
 
   const logoutUser = () => {
     dispatch(logout())
@@ -48,9 +67,17 @@ const Navbar = () => {
         <i className="fas fa-bars"></i>
       </div>
       <div>
+
         {!isAuth && <NavLink to={'/login'}>Войти</NavLink>}
         {!isAuth && <NavLink to={'/registration'}>Регистрация</NavLink>}
-        {isAuth && <div onClick={logoutUser}>Выйти</div>}
+        {isAuth &&
+          <HeaderActions>
+            <NavLink to={'/profile'}>
+              <Avatar src={userPhoto} alt={'userAvatar'} />
+            </NavLink>
+            <div onClick={logoutUser}>Выйти</div>
+          </HeaderActions>
+        }
       </div>
     </HeaderContainer>
   );

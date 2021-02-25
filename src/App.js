@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {authUser} from "./redux/auth-reducer";
 import FileContainer from "./components/FileContainer/FileContainer";
 import {getAuth} from "./redux/auth-selector";
+import ProfilePage from "./components/ProfilePage/ProfilePage";
 
 function App() {
 
@@ -30,7 +31,8 @@ function App() {
           <Redirect to={'/login'} />
         </Switch>
         : <Switch>
-          <Route path={'/'} component={FileContainer} />
+          <Route path={'/'} exact component={FileContainer} />
+          <Route path={'/profile'} component={ProfilePage} />
           <Redirect to={'/'} />
         </Switch>
       }
