@@ -4,9 +4,14 @@ const path = require('path');
 const port = process.env.PORT || 8080;
 const cors = require('cors');
 
+const corsOptions = {
+  origin: 'https://react-mern-c-lient.herokuapp.com',
+  optionsSuccessStatus: 200
+}
+
 // здесь у нас происходит импорт пакетов и определяется порт нашего сервера
 const app = express();
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(favicon(__dirname + '/build/favicon.ico'));
 
 //здесь наше приложение отдаёт статику
