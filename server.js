@@ -2,9 +2,11 @@ const express = require('express');
 const favicon = require('express-favicon');
 const path = require('path');
 const port = process.env.PORT || 8080;
+const cors = require('cors');
 
 // здесь у нас происходит импорт пакетов и определяется порт нашего сервера
 const app = express();
+app.use(cors());
 app.use(favicon(__dirname + '/build/favicon.png'));
 
 //здесь наше приложение отдаёт статику
