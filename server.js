@@ -12,7 +12,7 @@ app.use(express.static(__dirname, 'build'))
 
 
 app.get('*', (request, response) => {
-  return response.sendFile(path.join(__dirname, 'build', 'index.html'))
+  response.sendFile(path.join(__dirname, 'build', 'index.html'))
 })
 
 app.listen(PORT)
