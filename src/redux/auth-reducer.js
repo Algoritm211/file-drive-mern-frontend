@@ -48,6 +48,7 @@ export const authUser = () => async (dispatch) => {
     dispatch(setUserAuthData(data.user))
     localStorage.setItem('authToken', data.token)
   } catch (error) {
+    console.log(error)
     localStorage.removeItem('authToken')
     alert(error.response.data.message)
   }

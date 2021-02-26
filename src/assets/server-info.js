@@ -1,3 +1,3 @@
 
 
-export const SERVER_HOST = 'http://localhost:5000/'
+export const SERVER_HOST = 'https://react-mern-server.herokuapp.com/'
