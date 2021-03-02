@@ -9,16 +9,23 @@ import {authUser} from "./redux/auth-reducer";
 import FileContainer from "./components/FileContainer/FileContainer";
 import {getAuth} from "./redux/auth-selector";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
+import Loader from "./components/Loader/Loader";
+import {isAppReady} from "./redux/app-selector";
 
 function App() {
 
   const dispatch = useDispatch()
   const isAuth = useSelector(getAuth)
+  const isReady = useSelector(isAppReady)
 
 
   useEffect(() => {
     dispatch(authUser())
   }, [])
+
+  if (!isReady) {
+    return <Loader />
+  }
 
   return (
     <div className="App">

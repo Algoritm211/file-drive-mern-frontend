@@ -1,8 +1,9 @@
 import axios from "axios";
+import {SERVER_HOST} from "../assets/server-info";
 
 
 export const instanceAxios = axios.create({
-  baseURL: 'https://react-mern-server.herokuapp.com/api/',
+  baseURL: `${SERVER_HOST}api/`,
   headers: {Authorization: `Bearer ${localStorage.getItem('authToken')}`}
 })
 

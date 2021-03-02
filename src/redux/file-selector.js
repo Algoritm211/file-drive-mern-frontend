@@ -16,3 +16,7 @@ export const getFileStack = (state) => {
 export const getModeFileView = (state) => {
   return state.fileReducer.mode
 }
+
+export const getFileLoading = (state) => {
+  return state.fileReducer.loading
+}

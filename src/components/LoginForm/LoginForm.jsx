@@ -1,14 +1,17 @@
 import React, {useState} from 'react';
-import {loginAPI} from "../../api/login-api";
-import {Button, Container, Input} from "../common/form-styled-elements";
-import {useDispatch} from "react-redux";
+import {Button, Container, ErrorMessage, Input} from "../common/form-styled-elements";
+import {useDispatch, useSelector} from "react-redux";
 import {loginUser} from "../../redux/auth-reducer";
+import {getAuthError} from "../../redux/auth-selector";
+import styled from "styled-components";
+
 
 
 const LoginForm = () => {
   const dispatch = useDispatch()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const error = useSelector(getAuthError)
 
   const sendFormLogin = () => {
     dispatch(loginUser(email, password))
@@ -32,7 +35,8 @@ const LoginForm = () => {
         type={'password'}
         value={password}
         onChange={(event) => setPassword(event.target.value)}/>
-      <Button onClick={sendFormLogin}>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+      <Button onClick={sendFormLogin} type={'submit'}>
         Войти
       </Button>
     </Container>

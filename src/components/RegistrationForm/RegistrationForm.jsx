@@ -1,7 +1,10 @@
 import React, {useState} from 'react';
 import styled from 'styled-components'
 import {authAPI} from "../../api/login-api";
-import {Button, Container, Input} from "../common/form-styled-elements";
+import {Button, Container, ErrorMessage, Input} from "../common/form-styled-elements";
+import {useDispatch, useSelector} from "react-redux";
+import {getRegistrationError} from "../../redux/auth-selector";
+import {registerUser} from "../../redux/auth-reducer";
 
 
 
@@ -10,11 +13,14 @@ import {Button, Container, Input} from "../common/form-styled-elements";
 
 const RegistrationForm = () => {
 
+  const dispatch = useDispatch()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const error = useSelector(getRegistrationError)
+
 
   const sendFormToServer = () => {
-    authAPI.registration(email, password)
+    dispatch(registerUser(email, password))
     setEmail('')
     setPassword('')
   }
@@ -35,6 +41,7 @@ const RegistrationForm = () => {
         type={'password'}
         value={password}
         onChange={(event) => setPassword(event.target.value)}/>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
       <Button onClick={sendFormToServer}>
         Зарегистрироваться
       </Button>

@@ -15,6 +15,7 @@ import {
 import UploaderContainer from "./FileUploader/UploaderContainer";
 import Select from 'react-select';
 import {Input} from "../common/form-styled-elements";
+import {getAuth} from "../../redux/auth-selector";
 
 
 const Container = styled.div`
@@ -120,10 +121,13 @@ const FileContainer = () => {
   const currentFileDir = useSelector(getCurrentDir)
   let fileStack = useSelector(getFileStack)
   const fileModeView = useSelector(getModeFileView)
+  const isAuth = useSelector(getAuth)
 
   useEffect(() => {
-    dispatch(loadFiles(currentFileDir, sort))
-  }, [currentFileDir, sort])
+    if (isAuth) {
+      dispatch(loadFiles(currentFileDir, sort))
+    }
+  }, [currentFileDir, sort, isAuth])
 
 
   const onSelectChange = (event) => {

@@ -8,7 +8,8 @@ const fileReducer = createSlice({
     files: [],
     currentDir: null,
     fileStack: [],
-    mode: 'list' // 'list' or 'block'
+    mode: 'list', // 'list' or 'block'
+    loading: false
   },
   reducers: {
     setFiles(state, action) {
@@ -32,6 +33,9 @@ const fileReducer = createSlice({
 
     setFileViewMode(state, action) {
       state.mode = action.payload
+    },
+    toggleLoading(state, action) {
+      state.loading = action.payload
     }
   }
 })
@@ -43,14 +47,17 @@ export const {
   removeFile,
   pushToFileStack,
   popFromFileStack,
-  setFileViewMode
+  setFileViewMode,
+  toggleLoading
 } = fileReducer.actions
 export default fileReducer.reducer
 
 
 export const loadFiles = (dirId, sort) => async (dispatch) => {
+  dispatch(toggleLoading(true))
   const data = await fileAPI.getFiles(dirId, sort)
   dispatch(setFiles(data))
+  dispatch(toggleLoading(false))
 }
 
 export const createNewDir = (dirId, name) => async (dispatch) => {

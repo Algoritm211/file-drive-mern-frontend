@@ -10,3 +10,12 @@ export const getUserProfile = (state) => {
 export const getUserPhoto = (state) => {
   return state.authReducer.userPhoto
 }
+
+export const getAuthError = (state) => {
+  return state.authReducer.authError
+}
+
+
+export const getRegistrationError = (state) => {
+  return state.authReducer.registrationError
+}
