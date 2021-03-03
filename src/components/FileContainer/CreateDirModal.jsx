@@ -58,7 +58,7 @@ const CreateDirModal = ({setIsOpenModal, isOpen}) => {
 
   const dispatch = useDispatch()
   const currentDirId = useSelector(getCurrentDir)
-  const [dirName, setDirName] = useState()
+  const [dirName, setDirName] = useState('')
 
   const saveNewDir = () => {
     dispatch(createNewDir(currentDirId,dirName))

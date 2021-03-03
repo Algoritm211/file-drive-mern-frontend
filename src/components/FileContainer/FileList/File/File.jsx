@@ -1,9 +1,40 @@
-import React from 'react';
+import React, {useState} from 'react';
 import classes from './File.module.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {deleteFile, downloadFile, pushToFileStack, setCurrentDir} from "../../../../redux/file-reducer";
 import {getCurrentDir, getModeFileView} from "../../../../redux/file-selector";
 import Fade from 'react-reveal/Fade';
+import styled from 'styled-components'
+import {Button, Container, ErrorMessage} from "../../../common/form-styled-elements";
+
+
+const ErrorWindow = styled(Container)`
+  position: fixed;
+  top: 10%;
+  left: 40%;
+  z-index: 99999;
+  min-height: 100px;
+
+  div {
+    margin-bottom: 10px;
+  }
+`
+
+
+const ErrorContainer = ({text, toggleClose}) => {
+
+  const оnClose = (event) => {
+    event.stopPropagation()
+    toggleClose(false)
+  }
+
+  return (
+    <ErrorWindow>
+      <ErrorMessage>{text}</ErrorMessage>
+      <Button onClick={(event) => оnClose(event)}>OK</Button>
+    </ErrorWindow>
+  )
+}
 
 
 const File = (props) => {
@@ -11,6 +42,7 @@ const File = (props) => {
   const {name, date, size, type} = props.file
   const currentDir = useSelector(getCurrentDir)
   const fileModeView = useSelector(getModeFileView)
+  const [isErrorModal, setErrorModal] = useState(false)
 
 
   const openDirHandler = () => {
@@ -27,6 +59,11 @@ const File = (props) => {
 
   const deleteFileHandler = (event) => {
     event.stopPropagation()
+    if (props.file.type === 'dir' && props.file.children.length !== 0) {
+      // alert('Вы не можете удалить непустую папку')
+      setErrorModal(true)
+      return
+    }
     dispatch(deleteFile(props.file))
   }
 
@@ -54,6 +91,7 @@ const File = (props) => {
             <i className="fas fa-download"/></div>
           }
 
+          {isErrorModal && <ErrorContainer text={'Вы не можете удалить непустую папку'} toggleClose={setErrorModal}/>}
         </div>
       </Fade>
     );

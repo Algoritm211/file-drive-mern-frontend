@@ -43,7 +43,7 @@ const FileList = () => {
       <div className={fileModeView === 'block' ? classes.fileBlock : ''}>
         {files.length > 0
           ? filesBlock
-          : <NoFilesLabel>В этой папке пока что нет файлов</NoFilesLabel>
+          : <NoFilesLabel>Файлы не найдены</NoFilesLabel>
         }
       </div>
 
