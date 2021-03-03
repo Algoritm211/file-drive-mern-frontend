@@ -10,9 +10,10 @@ import Loader from "../../Loader/Loader";
 const NoFilesLabel = styled.div`
   font-size: 40px;
   text-decoration: wavy;
-  display: flex;
   justify-content: center;
+  width: 100%;
   margin-top: 10px;
+  text-align: center;
 `
 
 
